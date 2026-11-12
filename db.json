@@ -1,0 +1,45 @@
+
+{
+  "students": [
+    {
+      "id": "1",
+      "name": "Ahmed Mohamed",
+      "email": "ahmed@example.com",
+      "age": 20,
+      "enrolledCourses": ["1", "2"]
+    },
+    {
+      "id": "2",
+      "name": "Omar Ali",
+      "email": "omar@example.com",
+      "age": 22,
+      "enrolledCourses": ["2"]
+    }
+  ],
+  "teachers": [
+    {
+      "id": "1",
+      "name": "Mohamed Hassan",
+      "email": "mohamed@example.com",
+      "specialization": "Frontend Development"
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "title": "React Fundamentals",
+      "description": "Learn React from scratch",
+      "teacherId": "1",
+      "price": 1500,
+      "capacity": 30
+    },
+    {
+      "id": "2",
+      "title": "TypeScript Masterclass",
+      "description": "Master TypeScript with practical examples",
+      "teacherId": "1",
+      "price": 2000,
+      "capacity": 25
+    }
+  ]
+}
