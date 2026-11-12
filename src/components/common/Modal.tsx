@@ -23,7 +23,6 @@ export default function Modal({
   children,
   maxWidth = "lg",
 }: ModalProps) {
-  // Close on ESC key press
   useEffect(() => {
     if (!isOpen) return;
 
@@ -34,7 +33,6 @@ export default function Modal({
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    // Lock scroll on background body
     document.body.style.overflow = "hidden";
 
     return () => {
@@ -54,28 +52,28 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/75 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/80 backdrop-blur-md animate-fadeIn"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
       <div
-        className={`relative w-full ${maxWidthClasses} my-8 bg-[#141724] border border-white/10 rounded-2xl shadow-2xl p-6 md:p-8 text-white transition-all`}
+        className={`relative w-full ${maxWidthClasses} my-8 bg-gradient-to-b from-[#131726] to-[#0b0e18] border border-[#d4af37]/25 rounded-2xl shadow-[0_24px_64px_rgba(0,0,0,0.75),inset_0_1px_0_rgba(255,255,255,0.08)] p-6 md:p-8 text-white transition-all`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-white/10">
+        <div className="flex items-start justify-between pb-4 border-b border-[#d4af37]/15">
           <div>
-            <h3 className="text-xl font-bold tracking-tight text-white font-['Outfit']">
+            <h3 className="text-2xl font-bold tracking-tight text-white font-['Cormorant_Garamond',serif]">
               {title}
             </h3>
             {description && (
-              <p className="mt-1 text-sm text-[#858ba0]">{description}</p>
+              <p className="mt-1 text-sm text-[#9ba1b6]">{description}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-[#858ba0] hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+            className="p-2 text-[#9ba1b6] hover:text-[#f3dc92] rounded-xl hover:bg-white/5 transition-colors"
             aria-label="Close modal"
           >
             <X size={20} />

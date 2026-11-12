@@ -3,9 +3,9 @@
  * Custom React hook encapsulating state management and CRUD operations for Students.
  *
  * Concepts demonstrated:
- * - useCallback for stable function references across re-renders
  * - Clean async state machine (loading, data, error)
- * - Safe state updates on component unmount
+ * - Safe state updates with unmount cleanup (ignore flag)
+ * - useCallback for stable function references across re-renders
  */
 
 import { useState, useEffect, useCallback } from "react";
@@ -33,8 +33,7 @@ export function useStudents(autoFetch = true): UseStudentsReturn {
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * Fetches the complete list of students from the service.
-   * Wrapped in useCallback so it can safely be used in dependency arrays.
+   * Refreshes the students list on demand.
    */
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -51,12 +50,32 @@ export function useStudents(autoFetch = true): UseStudentsReturn {
     }
   }, []);
 
-  // Automatically fetch on mount if autoFetch is true
+  // Fetch initial data on mount without synchronous setState calls
   useEffect(() => {
-    if (autoFetch) {
-      refresh();
-    }
-  }, [autoFetch, refresh]);
+    if (!autoFetch) return;
+
+    let isMounted = true;
+    studentService
+      .getAll()
+      .then((data) => {
+        if (isMounted) {
+          setStudents(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setError(
+            err instanceof Error ? err.message : "Failed to load students"
+          );
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [autoFetch]);
 
   /**
    * Creates a student via the API and updates local state.
@@ -66,7 +85,6 @@ export function useStudents(autoFetch = true): UseStudentsReturn {
       setError(null);
       try {
         const newStudent = await studentService.create(data);
-        // Optimistically append the newly created student to state
         setStudents((prev) => [...prev, newStudent]);
         return newStudent;
       } catch (err) {

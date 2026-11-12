@@ -28,7 +28,7 @@ export function useTeachers(autoFetch = true): UseTeachersReturn {
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * Fetches the complete list of teachers from the service.
+   * Refreshes the teachers list on demand.
    */
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -46,10 +46,30 @@ export function useTeachers(autoFetch = true): UseTeachersReturn {
   }, []);
 
   useEffect(() => {
-    if (autoFetch) {
-      refresh();
-    }
-  }, [autoFetch, refresh]);
+    if (!autoFetch) return;
+
+    let isMounted = true;
+    teacherService
+      .getAll()
+      .then((data) => {
+        if (isMounted) {
+          setTeachers(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setError(
+            err instanceof Error ? err.message : "Failed to load teachers"
+          );
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [autoFetch]);
 
   /**
    * Creates a teacher via the API and updates local state.

@@ -11,8 +11,8 @@ export default function LoadingSpinner({
 }: LoadingSpinnerProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
-      <Loader2 size={size} className="animate-spin text-[#8b75f5]" />
-      <span className="text-sm font-medium text-[#858ba0]">{message}</span>
+      <Loader2 size={size} className="animate-spin text-[#d4af37]" />
+      <span className="text-sm font-medium text-[#9ba1b6]">{message}</span>
     </div>
   );
 }

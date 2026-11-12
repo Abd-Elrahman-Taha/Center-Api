@@ -1,13 +1,9 @@
-
 import {
   Users,
   BookOpen,
   GraduationCap,
   ClipboardList,
-  TrendingUp,
-  TrendingDown,
 } from "lucide-react";
-
 import type { StatCardData } from "../../types/dashboard.types";
 
 interface StatCardProps {
@@ -24,8 +20,6 @@ const icons = {
 export default function StatCard({ data }: StatCardProps) {
   const Icon = icons[data.icon];
 
-  const isPositive = data.trend === "up";
-
   return (
     <article className="stat-card">
       <div className="stat-card-top">
@@ -33,7 +27,7 @@ export default function StatCard({ data }: StatCardProps) {
           <Icon size={22} />
         </div>
 
-        <span className="stat-period">This month</span>
+        <span className="stat-period">Live API</span>
       </div>
 
       <div className="stat-card-info">
@@ -42,17 +36,10 @@ export default function StatCard({ data }: StatCardProps) {
       </div>
 
       <div className="stat-card-footer">
-        <span className={`stat-change ${isPositive ? "positive" : "negative"}`}>
-          {isPositive ? (
-            <TrendingUp size={15} />
-          ) : (
-            <TrendingDown size={15} />
-          )}
-
-          {data.change}
+        <span className="stat-change positive">
+          ● {data.change}
         </span>
-
-        <span>vs last month</span>
+        <span>in database</span>
       </div>
     </article>
   );

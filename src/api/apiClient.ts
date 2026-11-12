@@ -72,14 +72,16 @@ async function request<T>(endpoint:string , config:RequestOptions = {}): Promise
 
         if (error instanceof Error && error.name === "AbortError") {
         throw new Error(
-            "Request was cancelled or timed out"
+            "Request was cancelled or timed out",
+            { cause: error }
         );
         }
 
         throw new Error(
         error instanceof Error
             ? error.message
-            : "Network error occurred"
+            : "Network error occurred",
+        { cause: error }
         );
     }   finally {
         clearTimeout(timeoutId);

@@ -28,7 +28,7 @@ export function useCourses(autoFetch = true): UseCoursesReturn {
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * Fetches the complete list of courses from the service.
+   * Refreshes the courses list on demand.
    */
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -46,10 +46,30 @@ export function useCourses(autoFetch = true): UseCoursesReturn {
   }, []);
 
   useEffect(() => {
-    if (autoFetch) {
-      refresh();
-    }
-  }, [autoFetch, refresh]);
+    if (!autoFetch) return;
+
+    let isMounted = true;
+    courseService
+      .getAll()
+      .then((data) => {
+        if (isMounted) {
+          setCourses(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setError(
+            err instanceof Error ? err.message : "Failed to load courses"
+          );
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [autoFetch]);
 
   /**
    * Creates a course via the API and updates local state.

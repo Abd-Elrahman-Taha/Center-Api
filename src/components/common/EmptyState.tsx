@@ -1,4 +1,3 @@
-import React from "react";
 import type { LucideIcon } from "lucide-react";
 import { Inbox } from "lucide-react";
 
@@ -18,18 +17,18 @@ export default function EmptyState({
   onAction,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-12 text-center rounded-2xl border border-dashed border-white/10 bg-[#141724]/60">
-      <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-[#8b75f5] mb-4">
-        <Icon size={32} />
+    <div className="flex flex-col items-center justify-center p-14 text-center rounded-2xl border border-dashed border-[#d4af37]/25 bg-gradient-to-b from-[#111420]/90 to-[#0b0d15]/95 shadow-[0_14px_36px_rgba(0,0,0,0.35)]">
+      <div className="p-4 rounded-2xl bg-[#d4af37]/10 border border-[#d4af37]/25 text-[#f3dc92] mb-4">
+        <Icon size={30} />
       </div>
-      <h3 className="text-base font-semibold text-white mb-1 font-['Outfit']">
+      <h3 className="text-xl font-bold text-white mb-1.5 font-['Cormorant_Garamond',serif]">
         {title}
       </h3>
-      <p className="text-sm text-[#858ba0] max-w-sm mb-6">{description}</p>
+      <p className="text-sm text-[#9ba1b6] max-w-sm mb-6">{description}</p>
       {actionLabel && onAction && (
         <button
           onClick={onAction}
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-[#8b75f5] to-[#5543bc] hover:brightness-110 rounded-xl shadow-lg shadow-[#8b75f5]/25 transition-all"
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-[#0b0d14] bg-gradient-to-r from-[#f3dc92] via-[#d4af37] to-[#b58b24] hover:brightness-110 rounded-xl shadow-[0_10px_28px_rgba(212,175,55,0.28)] transition-all"
         >
           {actionLabel}
         </button>

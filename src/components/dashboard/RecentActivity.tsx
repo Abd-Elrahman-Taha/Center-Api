@@ -1,75 +1,82 @@
-
 import {
   UserPlus,
   BookOpen,
-  ClipboardCheck,
+  GraduationCap,
   Clock,
 } from "lucide-react";
+import type { Student } from "../../types/students.types";
+import type { Course } from "../../types/course.types";
+import type { Teacher } from "../../types/teacher.types";
 
-import type { Activity } from "../../types/dashboard.types";
+interface RecentActivityProps {
+  students: Student[];
+  courses: Course[];
+  teachers: Teacher[];
+}
 
-const activities: Activity[] = [
-  {
-    id: 1,
-    title: "New student registered",
-    description: "Ahmed Mohamed joined the platform",
-    time: "10 minutes ago",
-    type: "student",
-  },
-  {
-    id: 2,
-    title: "New course created",
-    description: "Advanced React Development",
-    time: "1 hour ago",
-    type: "course",
-  },
-  {
-    id: 3,
-    title: "New enrollment",
-    description: "Omar Ali enrolled in TypeScript",
-    time: "3 hours ago",
-    type: "enrollment",
-  },
-  {
-    id: 4,
-    title: "New student registered",
-    description: "Sara Hassan joined the platform",
-    time: "Yesterday",
-    type: "student",
-  },
-];
+export default function RecentActivity({
+  students,
+  courses,
+  teachers,
+}: RecentActivityProps) {
+  // Build activity feed strictly from actual records present in the database
+  const activities = [
+    ...students.slice(-2).map((s) => ({
+      id: `student-${s.id}`,
+      title: "Student registered",
+      description: `${s.name} (${s.email})`,
+      time: "Database record",
+      type: "student" as const,
+    })),
+    ...courses.slice(-2).map((c) => ({
+      id: `course-${c.id}`,
+      title: "Course available",
+      description: `${c.title} ($${c.price})`,
+      time: "Database record",
+      type: "course" as const,
+    })),
+    ...teachers.slice(-1).map((t) => ({
+      id: `teacher-${t.id}`,
+      title: "Faculty instructor",
+      description: `${t.name} - ${t.specialization}`,
+      time: "Database record",
+      type: "teacher" as const,
+    })),
+  ];
 
-const activityIcons = {
-  student: UserPlus,
-  course: BookOpen,
-  enrollment: ClipboardCheck,
-};
-
-export default function RecentActivity() {
   return (
     <section className="panel activity-panel">
       <div className="section-heading">
         <div>
-          <h2>Recent Activity</h2>
-          <p>Latest updates from your platform</p>
+          <h2>System Roster Activity</h2>
+          <p>Real-time records from your REST API</p>
         </div>
-
-        <button
-          className="text-button"
-          onClick={() => window.alert("Activity history is coming soon.")}
-        >
-          View all
-        </button>
       </div>
 
       <div className="activity-list">
-        {activities.map((activity) => {
-          const Icon = activityIcons[activity.type];
-
-          return (
+        {activities.length === 0 ? (
+          <p className="text-xs text-[#858ba0] py-4 text-center">
+            No records found in database.
+          </p>
+        ) : (
+          activities.map((activity) => (
             <div className="activity-item" key={activity.id}>
-              <div className={`activity-icon ${activity.type}`}>
-                <Icon size={18} />
+              <div
+                className={`activity-icon ${
+                  activity.type === "student"
+                    ? "student"
+                    : activity.type === "course"
+                    ? "course"
+                    : "enrollment"
+                }`}
+              >
+                {activity.type === "student" ? (
+                  <UserPlus size={18} />
+                ) : activity.type === "course" ? (
+                  <BookOpen size={18} />
+                ) : (
+                  <GraduationCap size={18} />
+                )}
               </div>
 
               <div className="activity-details">
@@ -78,12 +85,12 @@ export default function RecentActivity() {
               </div>
 
               <div className="activity-time">
-                <Clock size={13} />
+                <Clock size={12} />
                 <span>{activity.time}</span>
               </div>
             </div>
-          );
-        })}
+          ))
+        )}
       </div>
     </section>
   );

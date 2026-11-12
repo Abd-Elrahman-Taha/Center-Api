@@ -1,39 +1,44 @@
-
 import {
   UserPlus,
   BookPlus,
   GraduationCap,
   ArrowUpRight,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const actions = [
   {
-    title: "Add Student",
-    description: "Register a new student",
+    title: "Manage Students",
+    description: "Register and enroll students",
     icon: UserPlus,
     color: "purple",
+    path: "/students",
   },
   {
-    title: "Create Course",
-    description: "Add a new learning course",
+    title: "Manage Courses",
+    description: "Create and update curriculum",
     icon: BookPlus,
     color: "blue",
+    path: "/courses",
   },
   {
-    title: "Add Teacher",
-    description: "Register a new teacher",
+    title: "Manage Teachers",
+    description: "Add instructors and faculty",
     icon: GraduationCap,
     color: "orange",
+    path: "/teachers",
   },
 ];
 
 export default function QuickActions() {
+  const navigate = useNavigate();
+
   return (
     <section className="panel quick-actions-panel">
       <div className="section-heading">
         <div>
           <h2>Quick Actions</h2>
-          <p>Manage your platform faster</p>
+          <p>Navigate directly to resource management</p>
         </div>
       </div>
 
@@ -45,9 +50,7 @@ export default function QuickActions() {
             <button
               key={action.title}
               className="quick-action"
-              onClick={() =>
-                window.alert(`${action.title} functionality is coming soon.`)
-              }
+              onClick={() => navigate(action.path)}
             >
               <div className={`quick-action-icon ${action.color}`}>
                 <Icon size={21} />
